@@ -1,82 +1,43 @@
 
-#to set this up first intsall python on linux machine then type
-#pip install apscheduler
+# to set this up first intsall python on linux machine then type
+# pip install apscheduler
 import json
 import pyowm
 import datetime
 import time
-import mysql.connector
-
-#sets up 
-cnx = mysql.connector.connect(user='temperatureUSER', password='!Kms159753', database='tempatureData')
-cursor = cnx.cursor()
-add_date = ("INSERT INTO Glen_Ellyn"
-		"(month, day, year, temp)"
-		"VALUES (%s,%s,%s,%s)")
+import csv
 
 
-#########################################
-#this grabs the current hour
-def getTime():
-	now = datetime.datetime.now()
-	return now.hour
-###########################################
+locationLookingAt = 'Glen Ellyn'
 
 
-
-
-
-#################################################
-#this is the Api key and the authenticator
-API_key='7286257f9e652145c90b0f1cce93b3e1'
+API_key = '7286257f9e652145c90b0f1cce93b3e1'
 owm = pyowm.OWM(API_key)
-##############################################
-
-
-def setObservationLocation(location):
-	###############################################
-	#.weather_at_place sets up the location we want to look at
-	return owm.weather_at_place(location)
-	####################################################
-
-observation = setObservationLocation('Glen Ellyn')
-
-#w is the actual observation itself
+observation = owm.weather_at_place(locationLookingAt)
 w = observation.get_weather()
+tempOfRightNow = w.get_temperature('fahrenheit')
+tempatnow = tempOfRightNow['temp']
 
-################################################
-#this is loaded in json format
-tempInJsonFormat = w.get_temperature('fahrenheit')
 
+def writeFile(location, date, temp):
+    with open('temps.csv', 'a') as csvfile:
+        fieldnames = ['location', 'date', 'temp']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writerow({'location': location, 'date': date, 'temp': temp})
 
 
 def mainRun():
-	if time() == 12:
-		date = datetime.datetime.now()
-		print(getTime())
-		
-
-		#this is the info being added to the database
-		data_date = (date.month, date.day, date.year, tempInJsonFormat['temp'])
-		
-		#this is executing the adding to the database
-		cursor.execute(add_date,data_date)
-		cnx.commit()
-		cursor.close()
-		cnx.close()
-
-	
-		
-	else:
-		
-		print(getTime())
-		
+        now = datetime.datetime.now()
+        if now.hour == 12:
+            date = datetime.datetime.now()
+            todaysday = date.isoformat()
+            print(now.hour)
+            # this is the info being added to the database
+            writeFile(locationLookingAt, todaysday, tempatnow)
+        else:
+            print(now.hour)
 
 while True:
-	mainRun()
-	time.sleep(3600)
-
-
-
-
-
+    mainRun()
+    time.sleep(3600)
