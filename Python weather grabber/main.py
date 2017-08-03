@@ -10,7 +10,6 @@ import csv
 
 locationLookingAt = 'Glen Ellyn'
 
-
 API_key = '7286257f9e652145c90b0f1cce93b3e1'
 owm = pyowm.OWM(API_key)
 observation = owm.weather_at_place(locationLookingAt)
