@@ -12,10 +12,16 @@ locationLookingAt = 'Glen-Ellyn'
 
 API_key = '7286257f9e652145c90b0f1cce93b3e1'
 owm = pyowm.OWM(API_key)
-observation = owm.weather_at_place(locationLookingAt)
-w = observation.get_weather()
-tempOfRightNow = w.get_temperature('fahrenheit')
-tempatnow = tempOfRightNow['temp']
+
+
+
+def getWeatherTemp(locationLookingAtNow):
+    observation = owm.weather_at_place(locationLookingAtNow)
+    w = observation.get_weather()
+    tempOfRightNow = w.get_temperature('fahrenheit')
+    tempatnow = tempOfRightNow['temp']
+    print(tempatnow)
+    return tempatnow
 
 
 def writeFile(location, date, temp):
@@ -31,7 +37,7 @@ def mainRun():
         now = datetime.datetime.now()
         if now.hour == 12:
 
-
+            tempatnow = getWeatherTemp(locationLookingAt)
             date = datetime.date.today()
             todaysday = date.isoformat()
             print(now.hour)
