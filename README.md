@@ -16,3 +16,8 @@ What I am currently slowly implementing is a visualal representation of the data
 it by using the D3.js JavaScript library.
 
 ## Challenges I faced
+
+
+# Example
+
+![alt tag](https://github.com/kevkevinpal/Weather-Visualizer/Sample.png)

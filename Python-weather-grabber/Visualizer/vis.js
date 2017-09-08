@@ -72,8 +72,14 @@ d3.tsv("data.tsv", type, function(error, data) {
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.date); })
       .attr("y", function(d) { return y(d.temp); })
-      .attr("height", function(d) {return height - y(d.temp);  })
+      .attr("height", 0 )
       .attr("width", x.rangeBand());
+    
+    chart.selectAll(".bar")
+            .data(data)
+        .transition()
+        .delay(function(d,i) {return i * 300})
+            .attr("height", function(d) {return height - 1 - y(d.temp);  });
 });
 
 function type(d) {
