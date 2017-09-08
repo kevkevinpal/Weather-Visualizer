@@ -20,4 +20,4 @@ it by using the D3.js JavaScript library.
 
 # Example
 
-![alt tag](https://github.com/kevkevinpal/Weather-Visualizer/Sample.png)
+![alt tag](https://github.com/kevkevinpal/Weather-Visualizer/blob/master/Sample.png)
